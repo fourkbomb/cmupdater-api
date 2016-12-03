@@ -89,7 +89,14 @@ class UpdaterRequestHandler(BaseHTTPRequestHandler):
             return
 
     def do_POST(self):
+        if self.path == '/api/v1/build/get_delta':
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            self.wfile.write('{"errors":[{"message":"Unable to find delta"}]}')
+            return
         if self.path != '/api':
+            print(self.rfile.read(int(self.headers['content-length'])))
             self.send_error(404)
             self.end_headers()
             self.wfile.write('file not found')
